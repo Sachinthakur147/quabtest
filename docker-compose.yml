@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile  # No need to include `./server/` again here
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://localhost:27017/lead_dev
+    depends_on:
+      - database
+
+  ecom:
+    build:
+      context: ./ecom  # Set the context to the `ecom` directory
+      dockerfile: Dockerfile  # This will look for `Dockerfile` inside the `./ecom` directory
+    ports:
+      - "3000:80"
+
+  database:
+    image: mongo:latest
+    container_name: mongodb 
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
