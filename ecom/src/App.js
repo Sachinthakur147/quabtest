@@ -15,6 +15,7 @@ import UserProfile from "./Components/Pages/Profile";
 import Signup from "./Admin/Signup";
 
 import Userapp from "./Userapp";
+import GetProducts from "./Components/Pages/ProductList1";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -91,10 +92,10 @@ const App = () => {
               }
             />
             <Route
-              path="/profile/:userId"
+              path="/productlist"
               element={
                 <Layout onLogout={handleLogout}>
-                  <UserProfile />
+                  <GetProducts />
                 </Layout>
               }
             />
