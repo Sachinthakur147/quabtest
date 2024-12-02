@@ -21,25 +21,32 @@ const GetProducts = () => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // Confirm deletion modal visibility
   const [productToDelete, setProductToDelete] = useState(null); // Product to delete
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/user-role");
-        setRole(response.data.role); // Expecting "admin" or "user"
-      } catch (err) {
-        console.error("Error fetching user role");
-        setAuthError(true);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUserRole = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:5000/api/user-role");
+  //       setRole(response.data.role); // Expecting "admin" or "user"
+  //     } catch (err) {
+  //       console.error("Error fetching user role");
+  //       setAuthError(true);
+  //     }
+  //   };
 
-    fetchUserRole();
-  }, []);
+  //   fetchUserRole();
+  // }, []);
 
   useEffect(() => {
     if (auth.role === "admin") {
       const fetchProducts = async () => {
         try {
-          const response = await axios.get("http://localhost:5000/api/products");
+          const response = await axios.get(
+            "http://localhost:5000/api/products",
+            {
+              headers: {
+                Authorization: `Bearer ${auth.token}`, // Add the token with the Bearer prefix
+              },
+            }
+          );
           setProducts(response.data);
         } catch (err) {
           setError("Failed to fetch products");
@@ -103,11 +110,15 @@ const GetProducts = () => {
     }
 
     try {
-      await axios.put(`http://localhost:5000/api/products/${newProduct._id}`, newProduct, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.put(
+        `http://localhost:5000/api/products/${newProduct._id}`,
+        newProduct,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setProducts((prevProducts) =>
         prevProducts.map((product) =>
           product.pid === newProduct.pid ? newProduct : product
@@ -135,7 +146,9 @@ const GetProducts = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setProducts((prevProducts) => prevProducts.filter((product) => product._id !== productId));
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product._id !== productId)
+      );
       setShowDeleteConfirmation(false); // Close the delete confirmation modal
     } catch (err) {
       setError("Failed to delete product");
@@ -153,7 +166,9 @@ const GetProducts = () => {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
         <h1 className="text-4xl font-bold text-red-500 mb-4">403</h1>
-        <p className="text-gray-700 text-lg">Forbidden: You don't have access to this page.</p>
+        <p className="text-gray-700 text-lg">
+          Forbidden: You don't have access to this page.
+        </p>
       </div>
     );
   }
@@ -182,7 +197,9 @@ const GetProducts = () => {
       {showAddProductModal && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-900 bg-opacity-80 backdrop-blur-sm transition-all duration-300">
           <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-8 relative mx-4 sm:mx-0">
-            <h2 className="text-2xl font-bold text-gray-700 mb-4">Add New Product</h2>
+            <h2 className="text-2xl font-bold text-gray-700 mb-4">
+              Add New Product
+            </h2>
             <form onSubmit={handleAddProduct} className="space-y-4">
               <input
                 type="text"
@@ -236,7 +253,9 @@ const GetProducts = () => {
       {showEditProductModal && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-900 bg-opacity-80 backdrop-blur-sm transition-all duration-300">
           <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-8 relative mx-4 sm:mx-0">
-            <h2 className="text-2xl font-bold text-gray-700 mb-4">Edit Product</h2>
+            <h2 className="text-2xl font-bold text-gray-700 mb-4">
+              Edit Product
+            </h2>
             <form onSubmit={handleEditProduct} className="space-y-4">
               <input
                 type="text"
@@ -290,7 +309,9 @@ const GetProducts = () => {
       {showDeleteConfirmation && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-900 bg-opacity-80 backdrop-blur-sm transition-all duration-300">
           <div className="bg-white rounded-xl shadow-lg w-80 p-8 relative">
-            <h2 className="text-xl font-bold text-gray-700 mb-4">Are you sure you want to delete this product?</h2>
+            <h2 className="text-xl font-bold text-gray-700 mb-4">
+              Are you sure you want to delete this product?
+            </h2>
             <div className="flex space-x-4">
               <button
                 onClick={() => handleDeleteProduct(productToDelete._id)}
