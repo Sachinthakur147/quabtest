@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import logo from "../Assets/logo.png";
 
 const Sidebar1 = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true); 
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const handleToggle = () => {
     setSidebarOpen(!sidebarOpen);
@@ -32,25 +32,32 @@ const Sidebar1 = () => {
           to="/"
           className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200"
         >
-          <span role="img" aria-label="home">🏠</span>
+          <span role="img" aria-label="home">
+            🏠
+          </span>
           <span className={`ml-2 ${!sidebarOpen && "hidden"}`}>Home</span>
         </Link>
         <Link
           to="/"
           className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200"
         >
-          <span role="img" aria-label="dashboard">🖥️</span>
+          <span role="img" aria-label="dashboard">
+            🖥️
+          </span>
           <span className={`ml-2 ${!sidebarOpen && "hidden"}`}>Dashboard</span>
         </Link>
-       
+
         <Link
-          to="/products"
+          to="/productlist"
           className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200"
         >
-          <span role="img" aria-label="products">📋</span>
-          <span className={`ml-2 ${!sidebarOpen && "hidden"}`}>Product List</span>
+          <span role="img" aria-label="products">
+            📋
+          </span>
+          <span className={`ml-2 ${!sidebarOpen && "hidden"}`}>
+            Product List
+          </span>
         </Link>
-      
       </nav>
     </div>
   );
